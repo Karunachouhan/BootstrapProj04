@@ -1,0 +1,267 @@
+
+package in.co.rays.proj4.model;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import org.apache.log4j.Logger;
+
+import in.co.rays.proj4.bean.CollegeBean;
+import in.co.rays.proj4.bean.FacultyBean;
+import in.co.rays.proj4.exception.ApplicationException;
+import in.co.rays.proj4.exception.DuplicateRecordException;
+import in.co.rays.proj4.util.JDBCDataSource;
+
+/**
+ * FacultyModel class provides database operations for Faculty records. It
+ * performs insert, update, search and retrieval operations on the st_faculty
+ * table.
+ *
+ * @author karunaChouhan
+ * @version 1.0
+ */
+public class FacultyModel extends BaseModel<FacultyBean> {
+
+	private static final Logger log = Logger.getLogger(FacultyModel.class);
+
+	/**
+	 * Adds a new faculty record into the database.
+	 *
+	 * @param bean FacultyBean object containing faculty details
+	 * @return primary key of the inserted faculty
+	 * @throws ApplicationException     if application error occurs
+	 * @throws DuplicateRecordException if email already exists
+	 */
+	@Override
+	public long add(FacultyBean bean) throws ApplicationException, DuplicateRecordException {
+
+		log.debug("FacultyModel add method started");
+
+		Connection conn = null;
+		long pk = 0;
+
+		FacultyBean existBean = findByEmail(bean.getEmail());
+
+		if (existBean != null) {
+			log.warn("Faculty email already exists: " + bean.getEmail());
+			throw new DuplicateRecordException("email id already exist");
+		}
+
+		CollegeModel cmodel = new CollegeModel();
+		CollegeBean cbean = cmodel.findByPk(bean.getCollegeId());
+
+		try {
+			conn = JDBCDataSource.getConnection();
+			conn.setAutoCommit(false);
+
+			log.debug("Preparing insert query for faculty");
+
+			PreparedStatement pstmt = conn
+					.prepareStatement("insert into " + getTable() + " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			pstmt.setLong(1, nextPk());
+			pstmt.setLong(2, bean.getCollegeId());
+			pstmt.setString(3, cbean.getName());
+			pstmt.setString(4, bean.getFirstName());
+			pstmt.setString(5, bean.getLastName());
+			pstmt.setString(6, bean.getEmail());
+			pstmt.setString(7, bean.getMobileNo());
+			pstmt.setString(8, bean.getAddress());
+			pstmt.setString(9, bean.getGender());
+			pstmt.setDate(10, new java.sql.Date(bean.getDateOfBirth().getTime()));
+			pstmt.setString(11, bean.getCreatedBy());
+			pstmt.setString(12, bean.getModifiedBy());
+			pstmt.setTimestamp(13, bean.getCreatedDatetime());
+			pstmt.setTimestamp(14, bean.getModifiedDatetime());
+
+			int i = pstmt.executeUpdate();
+			conn.commit();
+
+			log.info("Faculty data inserted successfully. " + i + " row affected");
+
+		} catch (SQLException e) {
+			log.error("Exception occurred while inserting faculty data", e);
+			JDBCDataSource.trnRollBack(conn);
+		} finally {
+			log.debug("Closing faculty database connection");
+			JDBCDataSource.closeConnection(conn);
+		}
+
+		log.debug("FacultyModel add method ended");
+
+		return pk;
+	}
+
+	/**
+	 * Updates an existing faculty record in the database.
+	 *
+	 * @param bean FacultyBean object containing updated faculty details
+	 * @throws ApplicationException     if application error occurs
+	 * @throws DuplicateRecordException if email already exists for another faculty
+	 */
+	@Override
+	public void update(FacultyBean bean) throws ApplicationException, DuplicateRecordException {
+
+		log.debug("FacultyModel update method started");
+
+		Connection conn = null;
+
+		FacultyBean existBean = findByEmail(bean.getEmail());
+
+		if (existBean != null && existBean.getId() != bean.getId()) {
+			log.warn("Faculty email already exists: " + bean.getEmail());
+			throw new DuplicateRecordException("email id already exist");
+		}
+
+		CollegeModel cmodel = new CollegeModel();
+		CollegeBean cbean = cmodel.findByPk(bean.getCollegeId());
+
+		try {
+			conn = JDBCDataSource.getConnection();
+			conn.setAutoCommit(false);
+
+			log.debug("Preparing update query for faculty");
+
+			PreparedStatement pstmt = conn.prepareStatement("update " + getTable()
+					+ " set college_id=?, college_name=?, first_name=?, last_name=?, email=?, mobile_no=?, address=?, gender=?, date_of_birth=?, created_by=?, modified_by=?, created_datetime=?, modified_datetime=? where id=?");
+			pstmt.setLong(1, bean.getCollegeId());
+			pstmt.setString(2, cbean.getName());
+			pstmt.setString(3, bean.getFirstName());
+			pstmt.setString(4, bean.getLastName());
+			pstmt.setString(5, bean.getEmail());
+			pstmt.setString(6, bean.getMobileNo());
+			pstmt.setString(7, bean.getAddress());
+			pstmt.setString(8, bean.getGender());
+			pstmt.setDate(9, new java.sql.Date(bean.getDateOfBirth().getTime()));
+			pstmt.setString(10, bean.getCreatedBy());
+			pstmt.setString(11, bean.getModifiedBy());
+			pstmt.setTimestamp(12, bean.getCreatedDatetime());
+			pstmt.setTimestamp(13, bean.getModifiedDatetime());
+			pstmt.setLong(14, bean.getId());
+
+			int i = pstmt.executeUpdate();
+			conn.commit();
+
+			log.info("Faculty data updated successfully. " + i + " row affected");
+
+		} catch (SQLException e) {
+			log.error("Exception occurred while updating faculty data", e);
+			JDBCDataSource.trnRollBack(conn);
+		} finally {
+			log.debug("Closing faculty database connection");
+			JDBCDataSource.closeConnection(conn);
+		}
+
+		log.debug("FacultyModel update method ended");
+	}
+
+	/**
+	 * Generates a dynamic WHERE clause based on FacultyBean search criteria.
+	 *
+	 * @param bean FacultyBean object containing search criteria
+	 * @return dynamically generated WHERE clause
+	 */
+	@Override
+	public String getWhereClause(FacultyBean bean) {
+
+		log.debug("FacultyModel getWhereClause method started");
+
+		StringBuffer sql = new StringBuffer("");
+
+		if (bean != null) {
+			if (bean.getId() > 0) {
+				sql.append(" and id = " + bean.getId());
+			}
+			if (bean.getCollegeId() > 0) {
+				sql.append(" and college_id = " + bean.getCollegeId());
+			}
+			if (bean.getCollegeName() != null && bean.getCollegeName().length() > 0) {
+				sql.append(" and college_name like'" + bean.getCollegeName() + "'");
+			}
+			if (bean.getFirstName() != null && bean.getFirstName().length() > 0) {
+				sql.append(" and first_name like '" + bean.getFirstName() + "'");
+			}
+			if (bean.getLastName() != null && bean.getLastName().length() > 0) {
+				sql.append(" and last_name like '" + bean.getLastName() + "'");
+			}
+			if (bean.getEmail() != null && bean.getEmail().length() > 0) {
+				sql.append(" and email like '" + bean.getEmail() + "'");
+			}
+			if (bean.getMobileNo() != null && bean.getMobileNo().length() > 10) {
+				sql.append(" and mobie_no like '" + bean.getMobileNo() + "'");
+			}
+			if (bean.getAddress() != null && bean.getAddress().length() > 0) {
+				sql.append(" and address = '" + bean.getAddress() + "%'");
+			}
+			if (bean.getGender() != null && bean.getGender().length() > 0) {
+				sql.append(" and gender like '" + bean.getGender() + "'");
+			}
+			if (bean.getDateOfBirth() != null) {
+				sql.append(" and date_of_birth = " + bean.getDateOfBirth());
+			}
+			if (bean.getCreatedBy() != null && bean.getCreatedBy().length() > 0) {
+				sql.append(" and created_by like'" + bean.getCreatedBy() + "'");
+			}
+			if (bean.getModifiedBy() != null && bean.getModifiedBy().length() > 0) {
+				sql.append(" and modified_by like'" + bean.getModifiedBy() + "'");
+			}
+			if (bean.getCreatedDatetime() != null) {
+				sql.append(" and created_datetime like'" + bean.getCreatedDatetime() + "'");
+			}
+			if (bean.getModifiedDatetime() != null) {
+				sql.append(" and modified_datetime like'" + bean.getModifiedDatetime() + "'");
+			}
+		}
+
+		log.debug("Generated WHERE clause: " + sql.toString());
+		log.debug("FacultyModel getWhereClause method ended");
+
+		return sql.toString();
+	}
+
+	/**
+	 * Returns the database table name used by this model.
+	 *
+	 * @return database table name
+	 */
+	@Override
+	public String getTable() {
+		log.debug("FacultyModel getTable method called");
+		return "st_faculty";
+	}
+
+	/**
+	 * Creates and returns a new FacultyBean object.
+	 *
+	 * @return new FacultyBean instance
+	 */
+	@Override
+	public FacultyBean getBean() {
+		log.debug("FacultyModel getBean method called");
+		return new FacultyBean();
+	}
+
+	/**
+	 * Finds a faculty record using its unique email address.
+	 *
+	 * @param email email address of the faculty to search
+	 * @return FacultyBean object if found
+	 */
+	public FacultyBean findByEmail(String email) {
+
+		log.debug("FacultyModel findByEmail method started");
+
+		FacultyBean bean = findByUniqueColumn("email", email);
+
+		if (bean != null) {
+			log.info("Faculty record found for email: " + email);
+		} else {
+			log.warn("Faculty record not found for email: " + email);
+		}
+
+		log.debug("FacultyModel findByEmail method ended");
+
+		return bean;
+	}
+
+}
