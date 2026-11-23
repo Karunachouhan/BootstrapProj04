@@ -27,12 +27,13 @@
 
 	<!-- pb-5 mb-5 keeps the last rows from hiding behind the fixed footer -->
 	<div align="center" class="container-fluid px-3 pb-5 mb-5">
-
 		<div class="row justify-content-center">
 			<div class="col-12 col-lg-10 col-xl-9">
 
 				<%-- OLD heading (kept): <h1>User List</h1> --%>
-				<h1 class="display-6 fw-bold text-primary m-0 mb-4">User List</h1>
+				<h1 class="fs-3 fw-bold text-primary m-0 mb-3 text-start">User
+					List</h1>
+
 
 				<%-- OLD messages (kept, not deleted; replaced by Bootstrap alerts)
 				<h3 style="color: red"><%=succ%></h3>
@@ -62,6 +63,17 @@
 				<%
 				}
 				%>
+				
+				<div class="d-flex gap-2 align-items-right justify-content-end mb=3">
+			<a href="<%=ORSView.USER_REPORT_CTL%>" target="_blank"
+				class="btn btn-sm btn-warning fw-semibold"> <i
+				class="bi bi-file-earmark-pdf me-1"></i> Print PDF
+			</a> <a href="<%=ORSView.USER_REPORT_CTL%>?type=doc" target="_blank"
+				class="btn btn-sm btn-info fw-semibold"> <i
+				class="bi bi-file-earmark-word me-1"></i> Print DOC
+			</a>
+
+		</div>
 
 				<form action="<%=ORSView.USER_LIST_CTL%>" method="post">
 
@@ -87,44 +99,41 @@
 
 					<!-- Bootstrap search box similar to Role List -->
 					<div
-						class="bg-white border border-top-3 border-primary rounded-3 p-3 shadow-sm mb-4">
+						class="bg-white border border-primary rounded-3 p-2 shadow-sm mb-3">
 
-						<div class="row g-3 align-items-end justify-content-between">
+						<div class="row g-2 align-items-end justify-content-between">
 
 							<div class="col-12 col-md-6 col-lg-5 col-xl-3 text-start">
-								<label class="form-label small fw-semibold text-primary mb-1">First
-									Name</label>
-								<input type="text" name="firstName" value=""
-									class="form-control"
+								<label class="form-label small fw-semibold text-primary mb-1">
+									First Name </label> <input type="text" name="firstName" value=""
+									class="form-control form-control-sm"
 									placeholder="search by first name">
 							</div>
 
 							<div class="col-12 col-md-6 col-lg-5 col-xl-3 text-start">
-								<label class="form-label small fw-semibold text-primary mb-1">Last
-									Name</label>
-								<input type="text" name="lastName" value=""
-									class="form-control"
+								<label class="form-label small fw-semibold text-primary mb-1">
+									Last Name </label> <input type="text" name="lastName" value=""
+									class="form-control form-control-sm"
 									placeholder="search by last name">
 							</div>
 
 							<div class="col-12 col-md-6 col-lg-5 col-xl-3 text-start">
-								<label class="form-label small fw-semibold text-primary mb-1">Login</label>
-								<input type="email" name="login" value=""
-									class="form-control"
+								<label class="form-label small fw-semibold text-primary mb-1">
+									Login </label> <input type="email" name="login" value=""
+									class="form-control form-control-sm"
 									placeholder="search by login">
 							</div>
 
 							<div class="col-12 col-md-6 col-lg-5 col-xl-2 text-start">
-								<label class="form-label small fw-semibold text-primary mb-1">Dob</label>
-								<input type="date" name="dob" value=""
-									class="form-control"
-									placeholder="search by dob">
+								<label class="form-label small fw-semibold text-primary mb-1">
+									Dob </label> <input type="date" name="dob" value=""
+									class="form-control form-control-sm">
 							</div>
 
 							<div class="col-12 col-md-auto d-flex gap-2">
 								<input type="submit" name="operation"
 									value="<%=UserCtl.OP_SEARCH%>"
-									class="btn btn-primary px-4 shadow-sm">
+									class="btn btn-primary btn-sm px-3">
 							</div>
 
 						</div>
@@ -134,8 +143,9 @@
 					<div
 						class="bg-white border rounded-3 shadow-sm overflow-hidden mb-3 table-responsive">
 
+
 						<table
-							class="table table-hover align-middle text-center mb-0">
+							class="table table-hover align-middle text-center mb-0 small">
 
 							<%-- OLD header row (kept, not deleted; replaced by the thead below)
 							<tr style="background: skyblue">
@@ -154,7 +164,7 @@
 
 							<thead class="table-primary text-primary-emphasis border-bottom">
 								<tr>
-									<th class="py-3" style="width: 130px;">
+									<th class="py-2" style="width: 110px;">
 										<div
 											class="form-check d-flex justify-content-center align-items-center gap-2 mb-0">
 											<input
@@ -166,14 +176,14 @@
 										</div>
 									</th>
 
-									<th class="py-3" style="width: 90px;">S No.</th>
-									<th class="py-3" style="width: 90px;">Profile</th>
-									<th class="py-3">First Name</th>
-									<th class="py-3">Last Name</th>
-									<th class="py-3">Login</th>
-									<th class="py-3">Gender</th>
-									<th class="py-3">Dob</th>
-									<th class="py-3" style="width: 90px;">Edit</th>
+									<th class="py-2" style="width: 65px;">S No.</th>
+									<th class="py-2" style="width: 70px;">Profile</th>
+									<th class="py-2">First Name</th>
+									<th class="py-2">Last Name</th>
+									<th class="py-2">Login</th>
+									<th class="py-2">Gender</th>
+									<th class="py-2">Dob</th>
+									<th class="py-2" style="width: 75px;">Edit</th>
 								</tr>
 							</thead>
 
@@ -183,19 +193,14 @@
 							%>
 							<tr align="center">
 
-								<td>
-									<input type="checkbox" name="ids"
-										class="form-check-input shadow-none border-primary-subtle"
-										value="<%=bean.getId()%>">
-								</td>
+								<td><input type="checkbox" name="ids"
+									class="form-check-input shadow-none border-primary-subtle"
+									value="<%=bean.getId()%>"></td>
 
-								<td class="text-secondary fw-semibold"><%=index++%></td>
-
-								<td>
-									<img
-										src="<%=ORSView.UPLOAD_PHOTO_CTL + "?id=" + bean.getId()%>"
-										width="60" height="60">
-								</td>
+								<td class="py-2 text-secondary fw-semibold"><%=index++%></td>
+								<td><img
+									src="<%=ORSView.UPLOAD_PHOTO_CTL + "?id=" + bean.getId()%>"
+									width="42" height="42"></td>
 
 								<td class="fw-bold text-dark"><%=bean.getFirstName()%></td>
 
@@ -211,11 +216,9 @@
 								<td><a href="<%=ORSView.USER_CTL + "?id=" + bean.getId()%>">Edit</a></td>
 								--%>
 
-								<td>
-									<a
-										class="btn btn-outline-primary btn-sm px-3 rounded-pill fw-medium"
-										href="<%=ORSView.USER_CTL + "?id=" + bean.getId()%>">Edit</a>
-								</td>
+								<td><a
+									class="btn btn-outline-primary btn-sm px-2 rounded-pill fw-medium"
+									href="<%=ORSView.USER_CTL + "?id=" + bean.getId()%>">Edit</a></td>
 
 							</tr>
 							<%
@@ -224,7 +227,7 @@
 
 
 						</table>
-							<%@ include file="ListFooter.jsp"%>
+						<%@ include file="ListFooter.jsp"%>
 					</div>
 				</form>
 			</div>

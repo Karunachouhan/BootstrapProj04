@@ -349,7 +349,16 @@ body {
 							<li><a class="dropdown-item"
 								href="<%=ORSView.RAILWAY_LIST_CTL%>"> <%=ms.get("header.railwayList")%>
 							</a></li>
+
+							<li><a class="dropdown-item"
+								href="<%=ORSView.ONLINE_SHOPPING_CTL%>"> <%=ms.get("header.addOnlineShopping")%>
+							</a></li>
+
+							<li><a class="dropdown-item"
+								href="<%=ORSView.ONLINE_SHOPPING_LIST_CTL%>"> <%=ms.get("header.OnlineShoppingList")%>
+							</a></li>
 						</ul></li>
+
 
 
 					<%
@@ -779,10 +788,21 @@ body {
 					<%
 					}
 					%>
+					<!-- Java Doc -->
+					<%-- <a class="btn btn-info btn-sm dropdown-toggle" href="#"
+								role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								 </a>
+					<li><a class="dropdown-item"
+								href="<%=ORSView.JAVA_DOC_VIEW%>" target="_blank">Java Doc
+							</a></li> --%>
+					<li class="nav-item me-1 my-1"><a
+						class="nav-link bg-danger text-white"
+						href="<%=ORSView.JAVA_DOC_VIEW%>" target="_blank">Java Doc</a></li>
 
 					<!-- Single buttons -->
 
-					<li class="nav-item me-1 my-1"><a class="btn btn-dark btn-sm"
+					<li class="nav-item me-1 my-1"><a
+						class="btn btn-danger btn-sm"
 						href="<%=ORSView.LOGIN_CTL + "?operation=logout"%>"> <%=ms.get("header.logout")%>
 					</a></li>
 
@@ -865,35 +885,23 @@ body {
 					}
 					%>
 
-					<div class="btn-group ms-lg-auto">
 
-						<button type="button"
-							class="btn btn-primary btn-sm dropdown-toggle"
-							data-bs-toggle="dropdown" aria-expanded="false">
+					<form style="margin: 0;">
+						<select name="lang"
+							class="form-select form-select-sm bg-info text-white border-0 "
+							onchange="this.form.submit()" style="width: auto;">
 
-							<%=("hi".equals(locale)) ? "Hindi" : "English"%>
+							<option class="bg-white text-dark" value="en"
+								<%=("en".equals(locale)) ? "selected" : ""%>>English</option>
 
-						</button>
+							<option class="bg-white text-dark" value="hi"
+								<%=("hi".equals(locale)) ? "selected" : ""%>>Hindi</option>
 
-						<ul class="dropdown-menu dropdown-menu-end">
-
-							<li><a
-								class="dropdown-item <%=("en".equals(locale)) ? "active" : ""%>"
-								href="?lang=en"> English </a></li>
-
-							<li><a
-								class="dropdown-item <%=("hi".equals(locale)) ? "active" : ""%>"
-								href="?lang=hi"> Hindi </a></li>
-
-						</ul>
-
-					</div>
+						</select>
+					</form>
 				</div>
 
 			</div>
-
-		</div>
-
 	</nav>
 
 	<!-- ================= END NAVBAR ================= -->

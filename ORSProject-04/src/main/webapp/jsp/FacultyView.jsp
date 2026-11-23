@@ -73,9 +73,9 @@ select {
 
     HashMap<String, String> map = new HashMap<String, String>();
 
-    map.put("male", "male");
-    map.put("female", "female");
-    map.put("other", "other");
+    map.put("Male", "Male");
+    map.put("Female", "Female");
+    map.put("Other", "Other");
 
     String collegeErrorMsg = ServletUtility.getErrorMessage("collegeId", request);
 
@@ -468,7 +468,7 @@ select {
 
                                     <input type="date" name="dob"
                                         placeholder="Enter your date of birth"
-                                        value="<%=DataUtility.getStringData(bean.getDateOfBirth())%>"
+                                        value="<%=DataUtility.getDateString(bean.getDateOfBirth())%>"
                                         class="form-control form-control-sm
                                         <%=dobErrorMsg != null && !dobErrorMsg.trim().equals("") ? "is-invalid" : ""%>">
 

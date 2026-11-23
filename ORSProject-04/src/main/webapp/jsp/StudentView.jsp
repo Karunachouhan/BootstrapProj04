@@ -391,7 +391,7 @@ select {
 
                                     <input type="date" name="dateOfBirth"
                                         placeholder="Enter your date of birth"
-                                        value="<%=DataUtility.getStringData(bean.getDateOfBirth())%>"
+                                        value="<%=DataUtility.getDateString(bean.getDateOfBirth())%>"
                                         class="form-control form-control-sm
                                         <%=dobErrorMsg != null && !dobErrorMsg.trim().equals("") ? "is-invalid" : ""%>">
 

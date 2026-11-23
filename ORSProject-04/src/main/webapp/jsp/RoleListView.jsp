@@ -61,6 +61,17 @@
 				<%
 				}
 				%>
+				
+				<div class="d-flex gap-2 align-items-right justify-content-end mb-3">
+			<a href="<%=ORSView.ROLE_REPORT_CTL%>" target="_blank"
+				class="btn btn-sm btn-warning fw-semibold"> <i
+				class="bi bi-file-earmark-pdf me-1"></i> Print PDF
+			</a> <a href="<%=ORSView.ROLE_REPORT_CTL%>?type=doc" target="_blank"
+				class="btn btn-sm btn-info fw-semibold"> <i
+				class="bi bi-file-earmark-word me-1"></i> Print DOC
+			</a>
+
+		</div>
 
 				<form action="<%=ORSView.ROLE_LIST_CTL%>" method="post">
 
@@ -128,7 +139,7 @@
 										</div>
 									</th>
 									<th class="py-3" style="width: 90px;">S No</th>
-									<th class="py-3" style="width: 90px;">Id</th>
+									<!-- <th class="py-3" style="width: 90px;">Id</th> -->
 									<th class="py-3">Name</th>
 									<th class="py-3">Description</th>
 									<th class="py-3" style="width: 90px;">Edit</th>
@@ -145,8 +156,8 @@
 									value="<%=bean.getId()%>"></td>
 								<td class="text-secondary fw-semibold"><%=index++%></td>
 								<%-- OLD Id cell (kept; it was missing its closing </td>): <td><%=bean.getId()%> --%>
-								<td><span
-									class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1"><%=bean.getId()%></span></td>
+								<%-- <td><span
+									class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1"><%=bean.getId()%></span></td> --%>
 								<td class="fw-bold text-dark"><%=bean.getName()%></td>
 								<td class="text-muted text-start text-wrap"
 									style="max-width: 320px;"><%=bean.getDescription()%></td>

@@ -1,3 +1,4 @@
+<%@page import="in.co.rays.proj4.bean.StudentBean"%>
 <%@page import="in.co.rays.proj4.util.HTMLUtility"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="in.co.rays.proj4.bean.MarksheetBean"%>
@@ -69,8 +70,8 @@ select {
 
     String error = ServletUtility.getErrorMessage(request);
 
-    List<MarksheetBean> marksheetList =
-        (List) request.getAttribute("marksheetList");
+    List<StudentBean> marksheetList =
+        (List) request.getAttribute("studentList");
 
     String rollNoErrorMsg =
         ServletUtility.getErrorMessage("rollNo", request);
