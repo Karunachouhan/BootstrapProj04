@@ -7,7 +7,6 @@ import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
 
-import in.co.rays.proj4.bean.CollegeBean;
 import in.co.rays.proj4.bean.StudentBean;
 import in.co.rays.proj4.exception.ApplicationException;
 import in.co.rays.proj4.exception.DuplicateRecordException;
@@ -46,10 +45,6 @@ public class StudentModel extends BaseModel<StudentBean> {
 			log.warn("Student email already exists: " + bean.getEmail());
 			throw new DuplicateRecordException("email id already exist");
 		}
-		
-		CollegeModel model = new CollegeModel();
-		CollegeBean cbean = model.findByPk(bean.getCollegeId());
-		bean.setCollegeName(cbean.getName());
 
 		try {
 			pk = nextPk();
@@ -112,10 +107,6 @@ public class StudentModel extends BaseModel<StudentBean> {
 			log.warn("Student email already exists: " + bean.getEmail());
 			throw new DuplicateRecordException("email id already exist");
 		}
-		
-		CollegeModel model = new CollegeModel();
-		CollegeBean cbean = model.findByPk(bean.getCollegeId());
-		bean.setCollegeName(cbean.getName());
 
 		try {
 			conn = JDBCDataSource.getConnection();

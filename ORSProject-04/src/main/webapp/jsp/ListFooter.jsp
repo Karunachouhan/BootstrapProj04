@@ -15,44 +15,20 @@
 	int pageNo1 = ServletUtility.getPageNo(request);
 	List nextList = (List) request.getAttribute("nextList");
 	%>
-	<div class="bg-white p-3 shadow-sm mt-3 w-100">
+	<table width="100%">
 		<input type="hidden" name="pageNo" value="<%=pageNo1%>">
+		<tr>
+		<tr>
 
-		<div
-			class="d-flex align-items-center justify-content-between flex-wrap gap-2">
-
-			<!-- NEW: Previous = btn-warning when enabled, btn-secondary when disabled -->
-			<div class="text-start position-relative d-inline-block">
-				<span
-					class="carousel-control-prev-icon position-absolute top-50 translate-middle-y start-0 ms-3 ps-3 pointer-events-none z-3 <%=pageNo1 == 1 ? "text-muted opacity-50" : "text-white"%>"
-					style="width: 12px; height: 12px;"></span> <input type="submit"
-					name="operation"
-					class="btn px-4 ps-5 pe-4 fw-semibold shadow-sm d-inline-flex align-items-center gap-1 <%=pageNo1 == 1 ? "btn-light border text-muted opacity-50" : "btn-primary"%>"
-					<%=pageNo1 == 1 ? "disabled" : ""%>
-					value="<%=BaseCtl.OP_PREVIOUS%>">
-			</div>
-
-			<!-- NEW: Delete = btn-danger -->
-			<div class="text-center position-relative d-inline-block">
-				<span
-					class="position-absolute top-50 translate-middle-y start-0 ps-3 text-danger pointer-events-none z-3">🗑️</span>
-
-				<input type="submit" name="operation"
-					class="btn btn-outline-danger px-4 ps-5 pe-4 fw-semibold shadow-sm d-inline-flex align-items-center gap-1"
-					value="<%=BaseCtl.OP_DELETE%>">
-			</div>
-
-			<!-- NEW: Next = btn-warning when enabled, btn-secondary when disabled -->
-			<div class="text-end position-relative d-inline-block" class="py-2">
-				<input type="submit" name="operation"
-					class="btn px-4 ps-4 pe-5 fw-semibold shadow-sm d-inline-flex align-items-center gap-1 <%=nextList.size() == 0 ? "btn-light border text-muted opacity-50" : "btn-primary"%>"
-					<%=nextList.size() == 0 ? "disabled" : ""%>
-					value="<%=BaseCtl.OP_NEXT%>"> <span
-					class="carousel-control-next-icon position-absolute top-50 translate-middle-y end-0 pe-5 pointer-events-none z-3 <%=nextList.size() == 0 ? " text-muted opacity-50" : "text-white"%>"
-					style=" height: 12px;"></span>
-			</div>
-		</div>
-	</div>
+			<td><input type="submit" name="operation"
+				<%=pageNo1 == 1 ? "disabled" : ""%> value="<%=BaseCtl.OP_PREVIOUS%>"></td>
+			<td align="center"><input type="submit" name="operation"
+				value="<%=BaseCtl.OP_DELETE%>"></td>
+			<td align="right"><input type="submit" name="operation"
+				<%=nextList.size() == 0 ? "disabled" : ""%>
+				value="<%=BaseCtl.OP_NEXT%>"></td>
+		</tr>
+	</table>
 
 </body>
 </html>

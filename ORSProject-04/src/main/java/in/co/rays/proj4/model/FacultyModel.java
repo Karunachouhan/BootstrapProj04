@@ -50,7 +50,6 @@ public class FacultyModel extends BaseModel<FacultyBean> {
 
 		CollegeModel cmodel = new CollegeModel();
 		CollegeBean cbean = cmodel.findByPk(bean.getCollegeId());
-	
 
 		try {
 			conn = JDBCDataSource.getConnection();

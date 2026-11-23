@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import org.apache.log4j.Logger;
 
 import in.co.rays.proj4.bean.CollegeBean;
-import in.co.rays.proj4.bean.CourseBean;
 import in.co.rays.proj4.bean.SubjectBean;
 import in.co.rays.proj4.exception.ApplicationException;
 import in.co.rays.proj4.exception.DuplicateRecordException;
@@ -47,10 +46,6 @@ public class SubjectModel extends BaseModel<SubjectBean> {
 			log.warn("Subject name already exists: " + bean.getName());
 			throw new DuplicateRecordException("college name already exist");
 		}
-		
-		CourseModel model = new CourseModel();
-		CourseBean cbean = model.findByPk(bean.getCourseId());
-		bean.setName(cbean.getName());
 
 		try {
 			pk = nextPk();
@@ -106,10 +101,6 @@ public class SubjectModel extends BaseModel<SubjectBean> {
 			log.warn("Subject name already exists: " + bean.getName());
 			throw new DuplicateRecordException("college name already exist");
 		}
-		
-		CourseModel model = new CourseModel();
-		CourseBean cbean = model.findByPk(bean.getCourseId());
-		bean.setName(cbean.getName());
 
 		try {
 			conn = JDBCDataSource.getConnection();

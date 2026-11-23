@@ -20,12 +20,11 @@ public class TestRoleModel {
 
 	public static void main(String[] args) {
 
-		// testAdd();
-//		testUpdate();
+		 //testAdd();
+		testUpdate();
 		// testDelete();
 		// testFindByPk();
-		// testSearch();
-		
+		//testSearch();
 	}
 
 	private static void testSearch() {

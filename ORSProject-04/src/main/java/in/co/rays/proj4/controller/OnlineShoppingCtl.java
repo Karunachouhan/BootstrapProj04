@@ -1,13 +1,13 @@
 package in.co.rays.proj4.controller;
 
-import org.apache.log4j.Logger;
-
 import in.co.rays.proj4.bean.OnlineShoppingBean;
 import in.co.rays.proj4.model.OnlineShoppingModel;
 import in.co.rays.proj4.util.DataUtility;
 import in.co.rays.proj4.util.DataValidator;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
 
 /**
  * OnlineShoppingCtl handles online shopping product operations.
