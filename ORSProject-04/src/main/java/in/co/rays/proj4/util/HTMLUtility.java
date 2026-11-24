@@ -31,14 +31,14 @@ public class HTMLUtility {
 
 	public static String getList(String name, String selectedVal, HashMap<String, String> map) {
 
-		StringBuffer sb = new StringBuffer("<select class='form-control' name='" + name + "'>");
+		StringBuffer sb = new StringBuffer("<select class='form-control form-select-sm' name='" + name + "'>");
 
 		Set<String> keys = map.keySet();
 		String val = null;
 
 		boolean select = true;
 		if (select) {
-			sb.append("<option selected value=''>--------------Select Gender---------------</option>");
+			sb.append("<option  selected value=''>--------------Select Gender---------------</option>");
 		}
 
 		for (String key : keys) {

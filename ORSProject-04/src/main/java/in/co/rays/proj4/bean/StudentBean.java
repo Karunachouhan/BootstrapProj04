@@ -190,7 +190,7 @@ public class StudentBean extends BaseBean {
 	@Override
 	public String getValue() {
 		log.debug("StudentBean.getValue()");
-		return firstName + lastName;
+		return firstName +" "+ lastName;
 	}
 
 	/**

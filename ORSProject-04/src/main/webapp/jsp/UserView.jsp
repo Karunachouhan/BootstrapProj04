@@ -1,146 +1,547 @@
 <%@page import="in.co.rays.proj4.util.HTMLUtility"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="javax.management.relation.RoleList"%>
-<%@page import="in.co.rays.proj4.bean.RoleBean"%>
 <%@page import="java.util.List"%>
 <%@page import="in.co.rays.proj4.util.DataUtility"%>
 <%@page import="in.co.rays.proj4.controller.UserCtl"%>
 <%@page import="in.co.rays.proj4.util.ServletUtility"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
+
 <head>
+
 <meta charset="UTF-8">
-<title>Insert title here</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Add User</title>
+
+<style>
+
+/* Registration Header Gradient */
+
+.custom-gradient-header {
+    background: linear-gradient(135deg, #0d6efd 0%, #ffffff 50%, #0dcaf0 100%) !important;
+}
+
+/* Dropdown Styling */
+
+select {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    outline: none;
+}
+
+/* Registration Page Spacing */
+
+.registration-page {
+    padding-bottom: 140px !important;
+}
+
+/* Registration Card */
+
+.registration-card {
+    margin-bottom: 40px !important;
+}
+
+</style>
+
 </head>
+
 <body>
-	<jsp:useBean id="bean" class="in.co.rays.proj4.bean.UserBean"
-		scope="request"></jsp:useBean>
-	<%
-	String succ = ServletUtility.getSuccessMessage(request);
-	String error = ServletUtility.getErrorMessage(request);
-	List<RoleList> roleList = (List) request.getAttribute("roleList");
-	HashMap<String, String> map = new HashMap<String, String>();
-	map.put("Male", "Male");
-	map.put("Female", "Female");
-	%>
 
-	<%@ include file="Header.jsp"%>
-	<div align="center">
-		<h1><%=bean != null && bean.getId() > 0 ? "Update User" : "Add User"%></h1>
+    <jsp:useBean id="bean" class="in.co.rays.proj4.bean.UserBean"
+        scope="request"></jsp:useBean>
 
-		<h3 style="color: green"><%=succ%></h3>
-		<h3 style="color: red"><%=error%></h3>
+    <%
+    String succ = ServletUtility.getSuccessMessage(request);
 
-		<div align="center">
-			<%
-			if (bean.getId() > 0) {
-			%>
+    String error = ServletUtility.getErrorMessage(request);
 
-			<form action="<%=ORSView.UPLOAD_PHOTO_CTL%>" method="POST"
-				enctype="multipart/form-data">
+    List<RoleBean> roleList = (List) request.getAttribute("roleList");
 
-				<input type="hidden" name="id" value="<%=bean.getId()%>">
+    HashMap<String, String> map = new HashMap<String, String>();
 
-				<table>
+    map.put("Male", "Male");
+    map.put("Female", "Female");
 
-					<tr>
-						<th>Photo</th>
-					</tr>
+    String firstNameErrorMsg = ServletUtility.getErrorMessage("firstName", request);
 
-					<tr>
-						<td align="center"><img
-							src="<%=ORSView.UPLOAD_PHOTO_CTL%>?id=<%=bean.getId()%>"
-							onerror="this.style.display='none';" alt="User Photo" width="80"
-							height="80"
-							style="object-fit: cover; border-radius: 50%; border: 1px solid #ccc;">
-						</td>
-					</tr>
+    String lastNameErrorMsg = ServletUtility.getErrorMessage("lastName", request);
 
-					<tr>
-						<td align="center"><input type="file" name="photo"
-							accept="image/*"></td>
-					</tr>
+    String loginErrorMsg = ServletUtility.getErrorMessage("login", request);
 
-					<tr>
-						<td align="center"><input type="submit" value="Upload Photo">
-						</td>
-					</tr>
+    String passwordErrorMsg = ServletUtility.getErrorMessage("password", request);
 
-				</table>
+    String genderErrorMsg = ServletUtility.getErrorMessage("gender", request);
 
-			</form>
+    String roleErrorMsg = ServletUtility.getErrorMessage("roleId", request);
 
-			<%
-			}
-			%>
-		</div>
+    String dobErrorMsg = ServletUtility.getErrorMessage("dob", request);
+    %>
+
+    <%@ include file="Header.jsp"%>
 
 
-		<form action="<%=ORSView.USER_CTL%>" method="post">
-			<table>
-				<tr>
-					<th>First Name<font color="red">*</font></th>
-					<td><input type="text" name="firstName"
-						placeholder="enter your first name"
-						value="<%=DataUtility.getStringData(bean.getFirstName())%>"></td>
-					<td style="color: red"><%=ServletUtility.getErrorMessage("firstName", request)%></td>
-				</tr>
-				<tr>
-					<th>Last Name<font color="red">*</font></th>
-					<td><input type="text" name="lastName"
-						placeholder="enter your last name"
-						value="<%=DataUtility.getStringData(bean.getLastName())%>"></td>
-					<td style="color: red"><%=ServletUtility.getErrorMessage("lastName", request)%></td>
-				</tr>
-				<tr>
-					<th>Login<font color="red">*</font></th>
-					<td><input type="email" name="login"
-						placeholder="enter your email"
-						value="<%=DataUtility.getStringData(bean.getLogin())%>"></td>
-					<td style="color: red"><%=ServletUtility.getErrorMessage("login", request)%></td>
-				</tr>
-				<tr>
-					<th>Password<font color="red">*</font></th>
-					<td><input type="password" name="password"
-						placeholder="enter your password"
-						value="<%=DataUtility.getStringData(bean.getPassword())%>"></td>
-					<td style="color: red"><%=ServletUtility.getErrorMessage("password", request)%></td>
-				</tr>
-				<tr>
-					<th>Gender<font color="red">*</font></th>
-					<td><%=HTMLUtility.getList("gender", DataUtility.getStringData(bean.getGender()), map)%></td>
-					<td style="color: red"><%=ServletUtility.getErrorMessage("gender", request)%></td>
-				</tr>
+    <!-- Main User Container -->
 
-				<tr>
-					<th>Role<font color="red">*</font></th>
-					<td><%=HTMLUtility.getList("roleId", DataUtility.getStringData(bean.getRoleId()), roleList)%></td>
-					<td style="color: red"><%=ServletUtility.getErrorMessage("roleId", request)%></td>
-				</tr>
+    <div class="container-fluid py-1 registration-page">
 
-				<tr>
-					<th>DOB<font color="red">*</font></th>
-					<td><input type="date" name="dob"
-						value="<%=DataUtility.getDateString(bean.getDob())%>"></td>
-					<td style="color: red"><%=ServletUtility.getErrorMessage("dob", request)%></td>
+        <div class="row justify-content-center">
 
-				</tr>
+            <div class="col-12 col-sm-12 col-md-11 col-lg-6">
 
-				<tr>
-					<td><input type="hidden" name="id" value="<%=bean.getId()%>"></td>
-				</tr>
+                <!-- User Registration Card -->
+
+                <div class="card border-0 shadow-lg rounded-3 overflow-hidden registration-card">
+
+                    <!-- Card Header -->
+
+                    <div class="custom-gradient-header px-3 py-3 text-center">
+
+                        <div
+                            class="d-inline-flex bg-white bg-opacity-10 p-3 border border-2 border-primary rounded-circle text-primary mb-2 shadow-sm fs-4 align-items-center justify-content-center"
+                            style="width: 60px; height: 60px;">
+
+                            <i class="bi bi-person-plus-fill fw-bold"></i>
+
+                        </div>
+
+                        <h1 class="h3 fw-bold text-dark m-0 text-uppercase">
+
+                            <%=bean != null && bean.getId() > 0 ? "Update User" : "Add User"%>
+
+                        </h1>
+
+                        <small class="text-muted">
+                            Create or manage user account
+                        </small>
+
+                    </div>
 
 
-				<tr>
-					<th></th>
-					<td><input type="submit" name="operation"
-						value="<%=UserCtl.OP_SAVE%>"></td>
-				</tr>
-			</table>
-		</form>
-	</div>
-	<%@ include file="Footer.jsp"%>
+                    <!-- Card Body -->
+
+                    <div class="card-body p-3 px-md-5 pt-md-4 pb-md-3">
+
+
+                        <!-- Success Message -->
+
+                        <%
+                        if (succ != null && !succ.isEmpty()) {
+                        %>
+
+                        <div class="alert alert-success border-0 shadow-sm rounded-3">
+
+                            <i class="bi bi-check-circle-fill me-2"></i>
+
+                            <%=succ%>
+
+                        </div>
+
+                        <%
+                        }
+                        %>
+
+
+                        <!-- Error Message -->
+
+                        <%
+                        if (error != null && !error.isEmpty()) {
+                        %>
+
+                        <div class="alert alert-danger border-0 shadow-sm rounded-3">
+
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+
+                            <%=error%>
+
+                        </div>
+
+                        <%
+                        }
+                        %>
+
+
+                        <!-- Photo Upload Section -->
+
+                        <%
+                        if (bean.getId() > 0) {
+                        %>
+
+                        <form action="<%=ORSView.UPLOAD_PHOTO_CTL%>" method="POST"
+                            enctype="multipart/form-data">
+
+                            <input type="hidden" name="id"
+                                value="<%=bean.getId()%>">
+
+                            <div class="border rounded-3 p-3 mb-4 text-center bg-light">
+
+                                <label class="form-label fw-bold fs-6">
+
+                                    <i class="bi bi-camera-fill text-primary me-1"></i>
+
+                                    User Photo
+
+                                </label>
+
+                                <div class="mb-3">
+
+                                    <img
+                                        src="<%=ORSView.UPLOAD_PHOTO_CTL%>?id=<%=bean.getId()%>"
+                                        onerror="this.style.display='none';"
+                                        alt="User Photo"
+                                        width="80"
+                                        height="80"
+                                        style="object-fit: cover; border-radius: 50%; border: 2px solid #0d6efd;">
+
+                                </div>
+
+                                <div class="mb-3">
+
+                                    <input type="file" name="photo"
+                                        accept="image/*"
+                                        class="form-control form-control-sm">
+
+                                </div>
+
+                                <input type="submit" value="Upload Photo"
+                                    class="btn btn-primary btn-sm px-4 shadow">
+
+                            </div>
+
+                        </form>
+
+                        <%
+                        }
+                        %>
+
+
+                        <!-- User Form -->
+
+                        <form action="<%=ORSView.USER_CTL%>" method="post">
+
+                            <div class="row g-3">
+
+
+                                <!-- First Name -->
+
+                                <div class="col-md-6 mt-0">
+
+                                    <label class="form-label fw-bold fs-6">
+
+                                        <i class="bi bi-person-fill text-primary me-1"></i>
+
+                                        First Name
+
+                                        <span class="text-danger">*</span>
+
+                                    </label>
+
+                                    <input type="text" name="firstName"
+                                        placeholder="Enter your first name"
+                                        value="<%=DataUtility.getStringData(bean.getFirstName())%>"
+                                        class="form-control form-control-sm
+                                        <%=firstNameErrorMsg != null && !firstNameErrorMsg.trim().equals("") ? "is-invalid" : ""%>">
+
+                                    <%
+                                    if (firstNameErrorMsg != null && !firstNameErrorMsg.trim().equals("")) {
+                                    %>
+
+                                    <div class="invalid-feedback d-block fw-bold">
+
+                                        <i class="bi bi-x-circle-fill"></i>
+
+                                        <%=firstNameErrorMsg%>
+
+                                    </div>
+
+                                    <%
+                                    }
+                                    %>
+
+                                </div>
+
+
+                                <!-- Last Name -->
+
+                                <div class="col-md-6 mt-0">
+
+                                    <label class="form-label fw-bold fs-6">
+
+                                        <i class="bi bi-person-fill text-primary me-1"></i>
+
+                                        Last Name
+
+                                        <span class="text-danger">*</span>
+
+                                    </label>
+
+                                    <input type="text" name="lastName"
+                                        placeholder="Enter your last name"
+                                        value="<%=DataUtility.getStringData(bean.getLastName())%>"
+                                        class="form-control form-control-sm
+                                        <%=lastNameErrorMsg != null && !lastNameErrorMsg.trim().equals("") ? "is-invalid" : ""%>">
+
+                                    <%
+                                    if (lastNameErrorMsg != null && !lastNameErrorMsg.trim().equals("")) {
+                                    %>
+
+                                    <div class="invalid-feedback d-block fw-bold">
+
+                                        <i class="bi bi-x-circle-fill"></i>
+
+                                        <%=lastNameErrorMsg%>
+
+                                    </div>
+
+                                    <%
+                                    }
+                                    %>
+
+                                </div>
+
+
+                                <!-- Login -->
+
+                                <div class="col-12 mt-2">
+
+                                    <label class="form-label fw-bold fs-6">
+
+                                        <i class="bi bi-envelope-fill text-primary me-1"></i>
+
+                                        Login
+
+                                        <span class="text-danger">*</span>
+
+                                    </label>
+
+                                    <input type="email" name="login"
+                                        placeholder="Enter your email"
+                                        value="<%=DataUtility.getStringData(bean.getLogin())%>"
+                                        class="form-control form-control-sm
+                                        <%=loginErrorMsg != null && !loginErrorMsg.trim().equals("") ? "is-invalid" : ""%>">
+
+                                    <%
+                                    if (loginErrorMsg != null && !loginErrorMsg.trim().equals("")) {
+                                    %>
+
+                                    <div class="invalid-feedback d-block fw-bold">
+
+                                        <i class="bi bi-x-circle-fill"></i>
+
+                                        <%=loginErrorMsg%>
+
+                                    </div>
+
+                                    <%
+                                    }
+                                    %>
+
+                                </div>
+
+
+                                <!-- Password -->
+
+                                <div class="col-md-6 mt-2">
+
+                                    <label class="form-label fw-bold fs-6">
+
+                                        <i class="bi bi-lock-fill text-primary me-1"></i>
+
+                                        Password
+
+                                        <span class="text-danger">*</span>
+
+                                    </label>
+
+                                    <input type="password" name="password"
+                                        placeholder="Enter your password"
+                                        value="<%=DataUtility.getStringData(bean.getPassword())%>"
+                                        class="form-control form-control-sm
+                                        <%=passwordErrorMsg != null && !passwordErrorMsg.trim().equals("") ? "is-invalid" : ""%>">
+
+                                    <%
+                                    if (passwordErrorMsg != null && !passwordErrorMsg.trim().equals("")) {
+                                    %>
+
+                                    <div class="invalid-feedback d-block fw-bold">
+
+                                        <i class="bi bi-x-circle-fill"></i>
+
+                                        <%=passwordErrorMsg%>
+
+                                    </div>
+
+                                    <%
+                                    }
+                                    %>
+
+                                </div>
+
+
+                                <!-- Gender -->
+
+                                <div class="col-md-6 mt-2">
+
+                                    <label class="form-label fw-bold fs-6">
+
+                                        <i class="bi bi-gender-ambiguous text-primary me-1"></i>
+
+                                        Gender
+
+                                        <span class="text-danger">*</span>
+
+                                    </label>
+
+                                    <%=HTMLUtility.getList("gender",
+                                        DataUtility.getStringData(bean.getGender()), map)%>
+
+                                    <%
+                                    if (genderErrorMsg != null && !genderErrorMsg.trim().equals("")) {
+                                    %>
+
+                                    <div class="text-danger small fw-bold mt-1">
+
+                                        <i class="bi bi-x-circle-fill"></i>
+
+                                        <%=genderErrorMsg%>
+
+                                    </div>
+
+                                    <%
+                                    }
+                                    %>
+
+                                </div>
+
+
+                                <!-- Role -->
+
+                                <div class="col-md-6 mt-2">
+
+                                    <label class="form-label fw-bold fs-6">
+
+                                        <i class="bi bi-person-badge-fill text-primary me-1"></i>
+
+                                        Role
+
+                                        <span class="text-danger">*</span>
+
+                                    </label>
+
+                                    <%=HTMLUtility.getList("roleId",
+                                        DataUtility.getStringData(bean.getRoleId()), roleList)%>
+
+                                    <%
+                                    if (roleErrorMsg != null && !roleErrorMsg.trim().equals("")) {
+                                    %>
+
+                                    <div class="text-danger small fw-bold mt-1">
+
+                                        <i class="bi bi-x-circle-fill"></i>
+
+                                        <%=roleErrorMsg%>
+
+                                    </div>
+
+                                    <%
+                                    }
+                                    %>
+
+                                </div>
+
+
+                                <!-- Date Of Birth -->
+
+                                <div class="col-md-6 mt-2">
+
+                                    <label class="form-label fw-bold fs-6">
+
+                                        <i class="bi bi-calendar-event-fill text-primary me-1"></i>
+
+                                        DOB
+
+                                        <span class="text-danger">*</span>
+
+                                    </label>
+
+                                    <input type="date" name="dob"
+                                        value="<%=DataUtility.getStringData(bean.getDob())%>"
+                                        class="form-control form-control-sm
+                                        <%=dobErrorMsg != null && !dobErrorMsg.trim().equals("") ? "is-invalid" : ""%>">
+
+                                    <%
+                                    if (dobErrorMsg != null && !dobErrorMsg.trim().equals("")) {
+                                    %>
+
+                                    <div class="invalid-feedback d-block fw-bold">
+
+                                        <i class="bi bi-x-circle-fill"></i>
+
+                                        <%=dobErrorMsg%>
+
+                                    </div>
+
+                                    <%
+                                    }
+                                    %>
+
+                                </div>
+
+
+                                <!-- Hidden ID -->
+
+                                <input type="hidden" name="id"
+                                    value="<%=bean.getId()%>">
+
+
+                                <!-- Save Button -->
+
+                                <div class="col-12 text-center pt-3">
+
+                                    <button type="submit" name="operation"
+                                        value="<%=UserCtl.OP_SAVE%>"
+                                        class="btn btn-primary btn-sm px-5 shadow"
+                                        style="font-size: 15px;">
+
+                                        <i class="bi bi-person-plus-fill me-2"></i>
+
+                                        <%=bean != null && bean.getId() > 0 ? "Update User" : "Add User"%>
+
+                                    </button>
+
+                                </div>
+
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <%@ include file="Footer.jsp"%>
+
 </body>
+
 </html>

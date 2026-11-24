@@ -3,7 +3,10 @@ package in.co.rays.proj4.model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -206,6 +209,62 @@ public class MarksheetModel extends BaseModel<MarksheetBean> {
 
 		return sql.toString();
 	}
+	
+	/**
+	 * Retrieves the top 10 students based on the total marks obtained in Physics,
+	 * Chemistry and Mathematics.
+	 *
+	 * @return a list of MarksheetBean objects containing the merit list
+	 * @throws ApplicationException if an error occurs while retrieving the merit
+	 *                              list
+	 */
+
+	public List<MarksheetBean> getMeritList() throws ApplicationException {
+
+		log.info("Getting marksheet merit list");
+
+		List<MarksheetBean> list = new ArrayList<MarksheetBean>();
+
+		String sql = "SELECT * FROM " + getTable() + " ORDER BY (physics + chemistry + maths) DESC LIMIT 0, 10";
+
+		try {
+
+			Connection conn = JDBCDataSource.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+
+				MarksheetBean bean = new MarksheetBean();
+
+				bean.setId(rs.getLong(1));
+				bean.setRollNo(rs.getString(2));
+				bean.setStudentId(rs.getLong(3));
+				bean.setName(rs.getString(4));
+				bean.setPhysics(rs.getInt(5));
+				bean.setChemistry(rs.getInt(6));
+				bean.setMaths(rs.getInt(7));
+
+				list.add(bean);
+			}
+
+			rs.close();
+			pstmt.close();
+			conn.close();
+
+			log.info("Merit list retrieved successfully. Total records: " + list.size());
+
+		} catch (Exception e) {
+
+			log.error("Exception in getting marksheet merit list", e);
+			e.printStackTrace();
+			throw new ApplicationException("Exception in getting merit list");
+		}
+
+		return list;
+	}
+
 
 	/**
 	 * Returns the database table name for marksheet records.
