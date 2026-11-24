@@ -256,6 +256,16 @@ body {
 								<li><a class="dropdown-item"
 									href="<%=ORSView.MARKSHEET_LIST_CTL%>"> <%=ms.get("header.marksheetList")%>
 								</a></li>
+								
+								<li><a class="dropdown-item"
+									href="<%=ORSView.MARKSHEET_MERIT_LIST_CTL%>">Marit Marksheet
+								</a></li>
+								
+								<li><a class="dropdown-item"
+									href="<%=ORSView.GET_MARKSHEET_CTL%>"> Get Marksheet
+								</a></li>
+								
+								
 
 							</ul>
 
@@ -580,6 +590,14 @@ body {
 
 								<li><a class="dropdown-item"
 									href="<%=ORSView.MARKSHEET_LIST_CTL%>"> <%=ms.get("header.marksheetList")%>
+								</a></li>
+								
+								<li><a class="dropdown-item"
+									href="<%=ORSView.MARKSHEET_MERIT_LIST_CTL%>">Marit Marksheet
+								</a></li>
+								
+								<li><a class="dropdown-item"
+									href="<%=ORSView.GET_MARKSHEET_CTL%>"> Get Marksheet
 								</a></li>
 
 							</ul>
