@@ -1,0 +1,92 @@
+package in.co.rays.proj4.controller;
+
+import java.io.IOException;
+
+import in.co.rays.proj4.util.DataUtility;
+import in.co.rays.proj4.util.DataValidator;
+import in.co.rays.proj4.util.MessageSource;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.annotation.WebFilter;
+import jakarta.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
+
+/**
+ * LanguageFilter is a servlet filter used to manage the application language.
+ * It checks the language parameter in the request and updates the locale
+ * accordingly before passing the request to the next resource.
+ *
+ * @author karunaChouhan
+ */
+@WebFilter("/*")
+public class LanguageFilter implements Filter {
+
+	private static Logger log = Logger.getLogger(LanguageFilter.class);
+
+	/**
+	 * Initializes the language filter.
+	 *
+	 * @param filterConfig configuration information for the filter
+	 * @throws ServletException if an error occurs during filter initialization
+	 */
+	@Override
+	public void init(FilterConfig filterConfig) throws ServletException {
+
+		log.debug("LanguageFilter init method started");
+		log.info("LanguageFilter initialized successfully");
+
+	}
+
+	/**
+	 * Checks the language parameter in the HTTP request.
+	 * If a language is provided, it updates the application's locale
+	 * and passes the request to the next filter or resource.
+	 *
+	 * @param request ServletRequest object
+	 * @param response ServletResponse object
+	 * @param chain FilterChain used to pass the request to the next resource
+	 * @throws IOException if an input or output error occurs
+	 * @throws ServletException if a servlet-related error occurs
+	 */
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+
+		log.debug("LanguageFilter doFilter method started");
+
+		HttpServletRequest req = (HttpServletRequest) request;
+		MessageSource messagesource = MessageSource.getInstance();
+
+		String lang = DataUtility.getString(req.getParameter("lang"));
+
+		if (DataValidator.isNotNull(lang)) {
+			log.info("Language parameter received. Updating application locale");
+			messagesource.setLocale(lang);
+			log.info("Application locale updated successfully");
+		} else {
+			log.debug("No language parameter received. Using default locale");
+		}
+
+		chain.doFilter(req, response);
+
+		log.debug("LanguageFilter doFilter method completed");
+
+	}
+
+	/**
+	 * Destroys the language filter and releases any resources held by it.
+	 */
+	@Override
+	public void destroy() {
+
+		log.debug("LanguageFilter destroy method started");
+		log.info("LanguageFilter destroyed successfully");
+
+	}
+
+}
