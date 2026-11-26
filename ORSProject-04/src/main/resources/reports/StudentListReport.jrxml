@@ -17,7 +17,7 @@
     <field name="id"          class="java.lang.Long"/>
     <field name="firstName"   class="java.lang.String"/>
     <field name="lastName"    class="java.lang.String"/>
-    <field name="dob"         class="java.util.Date"/>
+    <field name="dateOfBirth"         class="java.util.Date"/>
     <field name="mobileNo"    class="java.lang.String"/>
     <field name="email"       class="java.lang.String"/>
     <field name="collegeName" class="java.lang.String"/>
@@ -150,7 +150,7 @@
             <textField isBlankWhenNull="true" pattern="dd-MM-yyyy">
                 <reportElement x="430" y="0" width="90" height="24" forecolor="#555555"/>
                 <textElement verticalAlignment="Middle"><font size="8"/></textElement>
-                <textFieldExpression><![CDATA[$F{dob}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{dateOfBirth}]]></textFieldExpression>
             </textField>
             <!-- Mobile -->
             <textField isBlankWhenNull="true">
